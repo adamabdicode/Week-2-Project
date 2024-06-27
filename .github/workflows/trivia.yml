@@ -14,5 +14,5 @@ jobs:
           python -m pip install --upgrade pip
         
       - name: Run tests with unittest
-        run: python -m unittest discover -s database -p '*_test.py'
+        run: python -m unittest discover -s databases -p '*_test.py'
        
