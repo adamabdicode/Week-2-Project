@@ -1,0 +1,18 @@
+name: Tests
+on: push
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.11.3
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+        
+      - name: Run tests with unittest
+        run: python -m unittest discover -s database -p '*_test.py'
+       
