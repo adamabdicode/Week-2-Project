@@ -24,11 +24,12 @@ def validate_answer(question, answer):
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "I am a trivia validation assistant. I validate answers given to trivia questions."},
-            {"role": "user", "content": f"This is the question I have: {question}. And this is the answer I want your help validating its correctness: {answer}"}
+            {"role": "system", "content": "I am a trivia validation assistant. I answer questions given to me or validate answers or  trivia game."},
+            {"role": "user", "content": f"This is the question or the answer I have: {question}. And this is the question or the answer I want your help validating its correctness: {answer}"}
         ]
     )
     return response['choices'][0]['message']['content']
+
 
 def update_counter(cursor, question_id):
     """Update the counter each time the question is asked."""
@@ -98,13 +99,22 @@ def handle_question_response(cursor, question_id, question, connection):
     """Handle the response loop for each question."""
     while True:
         user_answer = input("Your answer: ")
-        validated_answer = validate_answer(question, user_answer)
+        validation_status, validated_answer = validate_answer(question, user_answer)
         print(f"AI's response: {validated_answer}")
-        if "more context" not in validated_answer.lower() and "valid answer" not in validated_answer.lower():
-            update_question_answer(cursor, question_id, validated_answer, connection)
+
+        # Check for validation status to manage the response accordingly
+        if validation_status == "correct":
+            print("Congratulations! That's the correct answer.")
+            update_question_answer(cursor, question_id, user_answer, connection)
             break
-        else:
-            print("Please provide a clearer or more complete answer.")
+        elif validation_status == "incorrect":
+            print("That's not correct. Try again or type 'skip' to move to another question.")
+        elif validation_status == "incomplete":
+            print("Please provide a clearer or more complete answer. Type 'skip' if you'd like to move to another question.")
+
+        # Allow user to skip this question if they cannot provide a valid answer
+        if user_answer.lower() == "skip":
+            break
 
 def custom_question_workflow(cursor, connection):
     """Workflow for entering and handling a custom question."""

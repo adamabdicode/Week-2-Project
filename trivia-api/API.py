@@ -1,12 +1,6 @@
 import requests
 import json
 
-# urlForFilm = 'https://opentdb.com/api.php?amount=50&category=11&difficulty=medium' #Medium Problems
-# urlForFilm='https://opentdb.com/api.php?amount=50&category=11&difficulty=easy' #Easy Problems
-# urlForFilm='https://opentdb.com/api.php?amount=40&category=11&difficulty=hard' #Hard Problems (40 Problems)
-
-# urlmusic= "https://opentdb.com/api.php?amount=50&category=12&difficulty=easy"  #easy 
-# urlmusic= "https://opentdb.com/api.php?amount=50&category=12&difficulty=medium"
 url = 'https://opentdb.com/api.php?amount=50&category=12&difficulty=hard&type=multiple'
 response = requests.get(url)
 
@@ -23,3 +17,12 @@ if response.status_code == 200:
         print("Data appended to data.json file.")
 else:
     print("Failed to retrieve data from the API. Status code:", response.status_code)
+
+
+
+# urlForFilm = 'https://opentdb.com/api.php?amount=50&category=11&difficulty=medium' #Medium Problems
+# urlForFilm='https://opentdb.com/api.php?amount=50&category=11&difficulty=easy' #Easy Problems
+# urlForFilm='https://opentdb.com/api.php?amount=40&category=11&difficulty=hard' #Hard Problems (40 Problems)
+
+# urlmusic= "https://opentdb.com/api.php?amount=50&category=12&difficulty=easy"  #easy 
+# urlmusic= "https://opentdb.com/api.php?amount=50&category=12&difficulty=medium"
